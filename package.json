@@ -7,7 +7,7 @@
     "merge": "^1.2.1",
     "steam": "^1.4.0",
     "steam-resources": "github:seishun/node-steam-resources",
-    "winston": "^3.2.0"
+    "winston": "3.2.0"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
