@@ -26,6 +26,11 @@ Dota2._lobbyOptions = {
     custom_difficulty: "number",
     custom_game_id: "number",
     pause_setting: "number",
+
+    custom_game_crc: "number",
+    custom_game_timestamp: "number",
+    custom_min_players: "number",
+    custom_max_players: "number"
 };
 
 /**
@@ -123,7 +128,15 @@ Dota2.Dota2Client.prototype.createPracticeLobby = function(options, callback) {
         custom_map_name: "",
         custom_difficulty: 0,
         custom_game_id: 0,
-        custom_game_crc: 0
+        custom_game_crc: 0,
+        custom_game_timestamp: 0,
+        custom_game_penalties: false,
+        custom_min_players: 1,
+        custom_max_players: 8,
+        lan: false,
+        load_game_id: 0,
+        intro_mode: false
+
     };
     var finalOptions = Object.assign(defaults, options);
 
@@ -243,7 +256,7 @@ Dota2.Dota2Client.prototype.flipLobbyTeams = function(callback) {
  * Listen for the {@link module:Dota2.Dota2Client#event:inviteCreated|inviteCreated} event for the GC's response. 
  * Requires the GC to be {@link module:Dota2.Dota2Client#event:ready|ready}.
  * @alias module:Dota2.Dota2Client#inviteToLobby
- * @param {external:Long} steam_id - The Steam ID of the player you want to invite.
+ * @param {number} steam_id - The Steam ID of the player you want to invite.
  */
 Dota2.Dota2Client.prototype.inviteToLobby = function(steam_id) {
     steam_id = steam_id.toString() || null;

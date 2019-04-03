@@ -1,174 +1,130 @@
-var steam = require("steam"),
+const steam = require("steam"),
     util = require("util"),
     fs = require("fs"),
     crypto = require("crypto"),
-    dota2 = require("../"),
+    Dota2 = require("../"),
     steamClient = new steam.SteamClient(),
     steamUser = new steam.SteamUser(steamClient),
     steamFriends = new steam.SteamFriends(steamClient),
-    Dota2 = new dota2.Dota2Client(steamClient, true);
+    dota2Client = new Dota2.Dota2Client(steamClient, true),
+    Long = require("long");
 
 // Load config
 global.config = require("./config");
 
 // Load in server list if we've saved one before
-if (fs.existsSync('servers')) {
-  steam.servers = JSON.parse(fs.readFileSync('servers'));
+try {
+    if (fs.existsSync('servers')) {
+        steam.servers = JSON.parse(fs.readFileSync('servers'));
+    }
+} catch (e) {
+    console.log("Cannae load the sentry. " + e);
 }
 
+
 /* Steam logic */
-var onSteamLogOn = function onSteamLogOn(logonResp) {
-        if (logonResp.eresult == steam.EResult.OK) {
+const onSteamLogOn = function onSteamLogOn(logonResp) {
+        if (logonResp.eresult === steam.EResult.OK) {
             steamFriends.setPersonaState(steam.EPersonaState.Busy); // to display your steamClient's status as "Online"
             steamFriends.setPersonaName(global.config.steam_name); // to change its nickname
-            util.log("Logged on.");
-            Dota2.launch();
-            Dota2.on("ready", function() {
+            console.log("Logged on.");
+            dota2Client.launch();
+
+
+            dota2Client.on("ready", function () {
                 console.log("Node-dota2 ready.");
-                /* Note:  Should not declare new event listeners nested inside of
-                'ready', else you could end up with duplicated handlers if 'ready'
-                is fired multiple times.  Exception is made within this test file
-                for the same of keeping relevant samples together. */
-                /* INVENTORY */
-                // Dota2.setItemPositions([[ITEM ID, POSITION]]);
-                // Dota2.deleteItem(ITEM ID);
-                /* MATCHES */
-                // Event based
-                // Dota2.requestMatchDetails(246546269);
-                // Dota2.on("matchDetailsData", function (matchId, matchData) {
-                //     console.log(JSON.stringify(matchData, null, 2));
-                // });
-                // Dota2.requestMatchmakingStats();
-                // Dota2.on("matchmakingStatsData", function(searchingPlayersByGroup, disabledGroups, matchmakingStatsResponse) {
-                //     console.log(JSON.stringify(matchmakingStatsResponse, null, 2));
-                // });
-                // Callback based
-                // Dota2.requestMatchDetails(246546269, function(err, body) {
-                //     if (err) throw err;
-                //     console.log(JSON.stringify(body));
-                // });
-                /* COMMUNITY */
-                // Event based
-                // Dota2.requestProfileCard(28956443);
-                // Dota2.on("profileCardData", function (accountId, profileData) {
-                //     console.log(JSON.stringify(profileData, null, 2));
-                // });
-                // Dota2.requestPassportData(28956443);
-                // Dota2.on("passportData", function (accountId, passportData) {
-                //     console.log(passportData.league_guesses.stamped_players);
-                // });
-                // Dota2.requestHallOfFame();
-                // Dota2.on("hallOfFameData", function(week, featuredPlayers, featuredFarmer, hallOfFameResponse) {
-                //     console.log(JSON.stringify(hallOfFameResponse, null, 2));
-                // });
-                // Dota2.requestPlayerInfo(28956443);
-                // Dota2.on("playerInfoData", function (playerInfo) {
-                //     console.log(JSON.stringify(playerInfo, null, 2));
-                // });
-                // Callback based
-                // Dota2.requestProfileCard(28956443, function(err, body) {
-                //     if (err) throw err;
-                //     console.log(JSON.stringify(body));
-                // });
-                // Dota2.requestPassportData(28956443, function(err, body) {
-                //     console.log(JSON.stringify(body));
-                // });
-                // Dota2.requestHallOfFame(null, function(err, body){
-                //     console.log(JSON.stringify(body));
-                // });
-                /* CHAT */
-                // Event based
-                // Dota2.joinChat("rj");
-                // setTimeout(function(){ Dota2.sendMessage("wowoeagnaeigniaeg", "rj"); }, 5000);
-                // setTimeout(function(){ Dota2.leaveChat("rj"); }, 10000);
-                /* GUILD */
-                // Dota2.requestGuildData();
-                // Dota2.on("guildOpenPartyData", function(guildId, openParties){
-                // Event based
-                // Dota2.inviteToGuild(guildId, 28956443);
-                // Dota2.setGuildAccountRole(guildId, 28956443, 2);
-                // Dota2.cancelInviteToGuild(guildId, 75028261);
-                // Callback based
-                // Dota2.inviteToGuild(guildId, 28956443, function(err, body){
-                //     console.log(JSON.stringify(body));
-                // });
-                // Dota2.cancelInviteToGuild(guildId, 75028261, function(err, body){
-                //     console.log(JSON.stringify(body));
-                // });
-                // Dota2.setGuildAccountRole(guildId, 28956443, 2, function(err, body){
-                //     console.log(JSON.stringify(body));
-                // });
-                // Doing chat stuffs.
-                // var guildChannelName = util.format("Guild_%s", guildId);
-                // Dota2.joinChat(guildChannelName, Dota2.schema.DOTAChatChannelType_t.DOTAChannelType_Guild);
-                // setTimeout(function(){ Dota2.sendMessage("wowoeagnaeigniaeg", guildChannelName); }, 5000);
-                // setTimeout(function(){ Dota2.leaveChat(guildChannelName); }, 10000);
-                // });
+
+
+                dota2Client.leavePracticeLobby(function (err, body) {
+                    console.log(JSON.stringify(body));
+                });
+                dota2Client.destroyLobby(function (err, body) {
+                    console.log(JSON.stringify(body));
+                });
                 /* LOBBIES */
-                //  Dota2.createPracticeLobby({"game_name": "node-dota2",
-                //                             "server_region": dota2.ServerRegion.PERFECTWORLDTELECOM,
-                //                             "game_mode": dota2.schema.DOTA_GameMode.DOTA_GAMEMODE_AR,
-                //                             "series_type": 2,
-                //                             "game_version": 1,
-                //                             "allow_cheats": false,
-                //                             "fill_with_bots": false,
-                //                             "allow_spectating": true,
-                //                             "pass_key": "password",
-                //                             "radiant_series_wins": 0,
-                //                             "dire_series_wins": 0,
-                //                             "allchat": true
-                //                             },
-                //                             function(err, body){
-                //                                  console.log(JSON.stringify(body));
-                //                             });
-                // setTimeout(function(){
-                //     Dota2.leavePracticeLobby(function(err, body){
-                //         console.log(JSON.stringify(body));
-                //     });
-                // }, 60000);
-                /* LEAGUES */
-                // Dota2.requestLeaguesInMonth(10, 2013, 0, function(err, data) { // November 2013
-                //     console.log('Found ' + data.leagues.length + ' leagues full of schedule data :D');
-                // });
-                /* SOURCETV */
-                // Dota2.requestSourceTVGames({});
-                // Dota2.on("sourceTVGamesData", function(data) {    // May 2015
-                //   console.log('Successfully received SourceTVGames: ' + data.game_list);
-                // });
+                dota2Client.createPracticeLobby({
+                        "game_name": "dota2-bot-test",
+                        "server_region": Dota2.ServerRegion.PWTELECOMWUHAN,
+                        "game_mode": Dota2.schema.DOTA_GameMode.DOTA_GAMEMODE_CUSTOM,
+                        "series_type": 0,
+                        "game_version": 1,
+                        "allow_cheats": false,
+                        "fill_with_bots": false,
+                        "allow_spectating": true,
+                        "pass_key": "xxzz1",
+                        "radiant_series_wins": 0,
+                        "dire_series_wins": 0,
+                        "allchat": false,
+                        "custom_game_mode": "1613886175",
+                        "custom_map_name": "normal",
+                        "custom_difficulty": 0,
+                        "custom_game_id": new Long.fromString("1613886175"),
+                        "custom_min_players": 1,
+                        "custom_max_players": 8,
+                        //"custom_game_crc": new Long.fromString("13580460572162792542"),
+                        "custom_game_timestamp": Date.now(),
+                        "custom_game_penalties": false,
+                        "pause_setting": 1
+                    },
+                    function (err, body) {
+                        console.log(JSON.stringify(body));
+                        //dota2Client.inviteToLobby(new Long.fromString("76561198030533450"));
+                        dota2Client.inviteToLobby(new Long.fromString("76561198098695707"));
+                    });
             });
-            Dota2.on("unready", function onUnready() {
+
+            dota2Client.on("practiceLobbyUpdate", function (lobby) {
+                console.log("lobby practiceLobbyUpdate.");
+
+            })
+
+
+            dota2Client.on("unready", function onUnready() {
                 console.log("Node-dota2 unready.");
             });
-            Dota2.on("chatMessage", function(channel, personaName, message) {
+            dota2Client.on("chatMessage", function (channel, personaName, message) {
                 // util.log([channel, personaName, message].join(", "));
             });
-            Dota2.on("guildInvite", function(guildId, guildName, inviter) {
-                // Dota2.setGuildAccountRole(guildId, 75028261, 3);
+            dota2Client.on("guildInvite", function (guildId, guildName, inviter) {
+                // dota2Client.setGuildAccountRole(guildId, 75028261, 3);
             });
-            Dota2.on("unhandled", function(kMsg) {
-                util.log("UNHANDLED MESSAGE " + dota2._getMessageName(kMsg));
+            dota2Client.on("unhandled", function (kMsg) {
+                console.log("UNHANDLED MESSAGE " + Dota2._getMessageName(kMsg));
             });
-            // setTimeout(function(){ Dota2.exit(); }, 5000);
+/*
+            setTimeout(function () {
+                dota2Client.leavePracticeLobby(function (err, body) {
+                    console.log(JSON.stringify(body));
+                });
+                dota2Client.destroyLobby(function (err, body) {
+                    console.log(JSON.stringify(body));
+                });
+                dota2Client.exit();
+            }, 60000);*/
+
         }
     },
     onSteamServers = function onSteamServers(servers) {
-        util.log("Received servers.");
-        fs.writeFile('servers', JSON.stringify(servers), (err)=>{
-            if (err) {if (this.debug) util.log("Error writing ");}
-            else {if (this.debug) util.log("");}
+        console.log("Received servers.");
+        fs.writeFile('servers', JSON.stringify(servers), (err) => {
+            if (err) {
+                if (this.debug) console.log("Error writing ");
+            } else {
+                if (this.debug) console.log("");
+            }
         });
     },
     onSteamLogOff = function onSteamLogOff(eresult) {
-        util.log("Logged off from Steam.");
+        console.log("Logged off from Steam.");
     },
     onSteamError = function onSteamError(error) {
-        util.log("Connection closed by server: "+error);
+        console.log("Connection closed by server: " + error);
     };
 
-steamUser.on('updateMachineAuth', function(sentry, callback) {
+steamUser.on('updateMachineAuth', function (sentry, callback) {
     var hashedSentry = crypto.createHash('sha1').update(sentry.bytes).digest();
     fs.writeFileSync('sentry', hashedSentry)
-    util.log("sentryfile saved");
+    console.log("sentryfile saved");
     callback({
         sha_file: hashedSentry
     });
@@ -176,7 +132,7 @@ steamUser.on('updateMachineAuth', function(sentry, callback) {
 
 
 // Login, only passing authCode if it exists
-var logOnDetails = {
+const logOnDetails = {
     "account_name": global.config.steam_user,
     "password": global.config.steam_pass,
 };
@@ -187,11 +143,11 @@ try {
     var sentry = fs.readFileSync('sentry');
     if (sentry.length) logOnDetails.sha_sentryfile = sentry;
 } catch (beef) {
-    util.log("Cannae load the sentry. " + beef);
+    console.log("Cannae load the sentry. " + beef);
 }
 
 steamClient.connect();
-steamClient.on('connected', function() {
+steamClient.on('connected', function () {
     steamUser.logOn(logOnDetails);
 });
 steamClient.on('logOnResponse', onSteamLogOn);

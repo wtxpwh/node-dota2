@@ -2,12 +2,12 @@
   "name": "dota2",
   "version": "7.0.0",
   "dependencies": {
-    "deferred": "^0.7.9",
+    "deferred": "^0.7.10",
     "long": "^4.0.0",
     "merge": "^1.2.1",
-    "steam": "^1.4.0",
-    "steam-resources": "github:seishun/node-steam-resources",
-    "winston": "^3.2.0"
+    "steam": "^1.4.1",
+    "steam-resources": "github:wtxpwh/node-steam-resources",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
@@ -26,7 +26,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Arcana/node-dota2.git"
+    "url": "git://github.com/wtxpwh/node-dota2.git"
   },
   "keywords": [
     "steam",
