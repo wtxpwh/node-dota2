@@ -393,14 +393,14 @@ Dota2.Dota2Client.prototype.destroyLobby = function(callback) {
     callback = callback || null;
 
     /* Sends a message to the Game Coordinator requesting to destroy the lobby.  Listen for `lobbyDestroyed` event for Game Coordinator's response. */
-    this.Logger.debug("Sending match CMsgPracticeLobbyLeave request");
+    this.Logger.debug("Sending match CMsgDOTADestroyLobbyRequest request");
     
     var payload = new Dota2.schema.CMsgDOTADestroyLobbyRequest({});
     this.sendToGC(Dota2.schema.EDOTAGCMsg.k_EMsgDestroyLobbyRequest,
                     payload,
                     onDestroyLobbyResponse, 
                     callback);
-}
+};
 
 /**
  * Abandons the current game.
