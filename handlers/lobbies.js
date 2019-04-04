@@ -2,35 +2,43 @@ var Dota2 = require("../index");
 
 Dota2._lobbyOptions = {
     game_name: "string",
-    pass_key: "string",
     server_region: "number",
     game_mode: "number",
-    game_version: "number",
     cm_pick: "number",
+    bot_difficulty_radiant: "number",
     allow_cheats: "boolean",
     fill_with_bots: "boolean",
-    bot_difficulty_radiant: "number",
-    bot_difficulty_dire: "number",
-    bot_radiant: "number",
-    bot_dire: "number",
+    intro_mode: "boolean",
     allow_spectating: "boolean",
+    game_version: "number",
+    pass_key: "string",
+    leagueid: "number",
+    penalty_level_radiant: "number",
+    penalty_level_dire: "number",
+    load_game_id: "number",
     series_type: "number",
     radiant_series_wins: "number",
     dire_series_wins: "number",
-    previous_match_override: "number",
     allchat: "boolean",
     dota_tv_delay: "number",
-    leagueid: "number",
+    lan: "boolean",
     custom_game_mode: "string",
     custom_map_name: "string",
     custom_difficulty: "number",
-    custom_game_id: "number",
-    pause_setting: "number",
-
-    custom_game_crc: "number",
-    custom_game_timestamp: "number",
+    custom_game_id: "object",
     custom_min_players: "number",
-    custom_max_players: "number"
+    custom_max_players: "number",
+    custom_game_crc: "object",
+    custom_game_timestamp: "number",
+    pause_setting: "number",
+    bot_difficulty_dire: "number",
+    custom_game_penalties: "boolean",
+
+    bot_dire: "number",
+    bot_radiant: "number",
+    previous_match_override: "number",
+    league_node_id: "number"
+
 };
 
 /**
@@ -135,7 +143,16 @@ Dota2.Dota2Client.prototype.createPracticeLobby = function(options, callback) {
         custom_max_players: 8,
         lan: false,
         load_game_id: 0,
-        intro_mode: false
+        intro_mode: false,
+        league_node_id: 0,
+
+
+        penalty_level_radiant: 0,
+        penalty_level_dire: 0,
+        pause_setting: 1,
+        bot_dire: 0,
+        bot_radiant: 0,
+
 
     };
     var finalOptions = Object.assign(defaults, options);

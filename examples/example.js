@@ -12,6 +12,7 @@ const steam = require("steam"),
 // Load config
 global.config = require("./config");
 
+
 // Load in server list if we've saved one before
 try {
     if (fs.existsSync('servers')) {
@@ -61,7 +62,7 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
                         "custom_game_id": new Long.fromString("1613886175"),
                         "custom_min_players": 1,
                         "custom_max_players": 8,
-                        //"custom_game_crc": new Long.fromString("13580460572162792542"),
+                        "custom_game_crc": new Long.fromString("13580460572162792542"),
                         "custom_game_timestamp": Date.now(),
                         "custom_game_penalties": false,
                         "pause_setting": 1
@@ -76,7 +77,7 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
             dota2Client.on("practiceLobbyUpdate", function (lobby) {
                 console.log("lobby practiceLobbyUpdate.");
 
-            })
+            });
 
 
             dota2Client.on("unready", function onUnready() {
