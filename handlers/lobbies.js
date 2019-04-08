@@ -28,17 +28,18 @@ Dota2._lobbyOptions = {
     custom_game_id: "number",
     custom_min_players: "number",
     custom_max_players: "number",
+    visibility: "number",
     custom_game_crc: "number",
     custom_game_timestamp: "number",
+    previous_match_override: "number",
     pause_setting: "number",
     bot_difficulty_dire: "number",
-
-
     bot_dire: "number",
     bot_radiant: "number",
-    previous_match_override: "number",
-
-
+    selection_priority_rules: "number",
+    custom_game_penalties: "boolean",
+    lan_host_ping_location: "string",
+    league_node_id: "number"
 
 };
 
@@ -118,39 +119,35 @@ Dota2.Dota2Client.prototype.createPracticeLobby = function(options, callback) {
         game_name: "",
         server_region: Dota2.ServerRegion.PWTELECOMWUHAN,
         game_mode: Dota2.schema.DOTA_GameMode.DOTA_GAMEMODE_CUSTOM,
-        game_version: Dota2.schema.DOTAGameVersion.GAME_VERSION_STABLE,
         cm_pick: Dota2.schema.DOTA_CM_PICK.DOTA_CM_RANDOM,
+        bot_difficulty_radiant: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_HARD,
         allow_cheats: false,
         fill_with_bots: false,
-        bot_difficulty_radiant: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_HARD,
-        bot_difficulty_dire: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_HARD,
+        intro_mode: false,
         allow_spectating: true,
+        game_version: Dota2.schema.DOTAGameVersion.GAME_VERSION_STABLE,
         pass_key: "",
+        leagueid: 0,
+        penalty_level_radiant: 0,
+        penalty_level_dire: 0,
+        load_game_id: 0,
         series_type: Dota2.SeriesType.NONE,
         radiant_series_wins: 0,
         dire_series_wins: 0,
         allchat: false,
         dota_tv_delay: Dota2.schema.LobbyDotaTVDelay.LobbyDotaTV_120,
-        leagueid: 0,
         lan: false,
-        load_game_id: 0,
-        intro_mode: false,
-        penalty_level_radiant: 0,
-        penalty_level_dire: 0,
         custom_game_mode: "",
         custom_map_name: "",
         custom_difficulty: 0,
         custom_game_id: 0,
-        custom_game_crc: 0,
-        custom_game_timestamp: 0,
-
         custom_min_players: 1,
         custom_max_players: 8,
-
+        custom_game_crc: 0,
+        custom_game_timestamp: 0,
         pause_setting: 1,
-        custom_game_penalties: false,
-
-
+        bot_difficulty_dire: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_HARD,
+        custom_game_penalties: false
     };
     var finalOptions = Object.assign(defaults, options);
 
