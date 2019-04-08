@@ -12,7 +12,6 @@ const steam = require("steam"),
 // Load config
 global.config = require("./config");
 
-
 // Load in server list if we've saved one before
 try {
     if (fs.existsSync('servers')) {
@@ -69,8 +68,7 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
                     },
                     function (err, body) {
                         console.log(JSON.stringify(body));
-                        //dota2Client.inviteToLobby(new Long.fromString("76561198030533450"));
-                        dota2Client.inviteToLobby(new Long.fromString("76561198098695707"));
+                        dota2Client.inviteToLobby(new Long.fromString("76561198030533450"));
                     });
             });
 

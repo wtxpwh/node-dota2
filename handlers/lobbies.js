@@ -25,19 +25,20 @@ Dota2._lobbyOptions = {
     custom_game_mode: "string",
     custom_map_name: "string",
     custom_difficulty: "number",
-    custom_game_id: "object",
+    custom_game_id: "number",
     custom_min_players: "number",
     custom_max_players: "number",
-    custom_game_crc: "object",
+    custom_game_crc: "number",
     custom_game_timestamp: "number",
     pause_setting: "number",
     bot_difficulty_dire: "number",
-    custom_game_penalties: "boolean",
+
 
     bot_dire: "number",
     bot_radiant: "number",
     previous_match_override: "number",
-    league_node_id: "number"
+
+
 
 };
 
@@ -115,14 +116,14 @@ Dota2.Dota2Client.prototype.createPracticeLobby = function(options, callback) {
 
     var defaults = {
         game_name: "",
-        server_region: Dota2.ServerRegion.UNSPECIFIED,
-        game_mode: Dota2.schema.DOTA_GameMode.DOTA_GAMEMODE_AP,
+        server_region: Dota2.ServerRegion.PWTELECOMWUHAN,
+        game_mode: Dota2.schema.DOTA_GameMode.DOTA_GAMEMODE_CUSTOM,
         game_version: Dota2.schema.DOTAGameVersion.GAME_VERSION_STABLE,
         cm_pick: Dota2.schema.DOTA_CM_PICK.DOTA_CM_RANDOM,
         allow_cheats: false,
         fill_with_bots: false,
-        bot_difficulty_radiant: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_PASSIVE,
-        bot_difficulty_dire: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_PASSIVE,
+        bot_difficulty_radiant: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_HARD,
+        bot_difficulty_dire: Dota2.schema.DOTABotDifficulty.BOT_DIFFICULTY_HARD,
         allow_spectating: true,
         pass_key: "",
         series_type: Dota2.SeriesType.NONE,
@@ -131,27 +132,23 @@ Dota2.Dota2Client.prototype.createPracticeLobby = function(options, callback) {
         allchat: false,
         dota_tv_delay: Dota2.schema.LobbyDotaTVDelay.LobbyDotaTV_120,
         leagueid: 0,
-        previous_match_override: 0,
+        lan: false,
+        load_game_id: 0,
+        intro_mode: false,
+        penalty_level_radiant: 0,
+        penalty_level_dire: 0,
         custom_game_mode: "",
         custom_map_name: "",
         custom_difficulty: 0,
         custom_game_id: 0,
         custom_game_crc: 0,
         custom_game_timestamp: 0,
-        custom_game_penalties: false,
+
         custom_min_players: 1,
         custom_max_players: 8,
-        lan: false,
-        load_game_id: 0,
-        intro_mode: false,
-        league_node_id: 0,
 
-
-        penalty_level_radiant: 0,
-        penalty_level_dire: 0,
         pause_setting: 1,
-        bot_dire: 0,
-        bot_radiant: 0,
+        custom_game_penalties: false,
 
 
     };
@@ -160,6 +157,7 @@ Dota2.Dota2Client.prototype.createPracticeLobby = function(options, callback) {
     this.Logger.debug("Sending match CMsgPracticeLobbyCreate request");
     var lobby_details = Dota2._parseOptions(finalOptions, Dota2._lobbyOptions);
     var payload = new Dota2.schema.CMsgPracticeLobbyCreate({
+        "client_version": 3416,
         "lobby_details": new Dota2.schema.CMsgPracticeLobbySetDetails(lobby_details),
         "pass_key": finalOptions.pass_key
     });
@@ -393,14 +391,14 @@ Dota2.Dota2Client.prototype.destroyLobby = function(callback) {
     callback = callback || null;
 
     /* Sends a message to the Game Coordinator requesting to destroy the lobby.  Listen for `lobbyDestroyed` event for Game Coordinator's response. */
-    this.Logger.debug("Sending match CMsgDOTADestroyLobbyRequest request");
+    this.Logger.debug("Sending match CMsgPracticeLobbyLeave request");
     
     var payload = new Dota2.schema.CMsgDOTADestroyLobbyRequest({});
     this.sendToGC(Dota2.schema.EDOTAGCMsg.k_EMsgDestroyLobbyRequest,
                     payload,
                     onDestroyLobbyResponse, 
                     callback);
-};
+}
 
 /**
  * Abandons the current game.
