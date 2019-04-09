@@ -34,6 +34,7 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
             dota2Client.on("ready", function () {
                 console.log("Node-dota2 ready.");
 
+                dota2Client.publishUserStat(3, 0);
 
                 dota2Client.leavePracticeLobby(function (err, body) {
                     console.log(JSON.stringify(body));
@@ -41,10 +42,16 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
                 dota2Client.destroyLobby(function (err, body) {
                     console.log(JSON.stringify(body));
                 });
+
+                let td= [];
+                td.push(new Dota2.schema.CLobbyTeamDetails({}));
+                td.push(new Dota2.schema.CLobbyTeamDetails({}));
+
                 /* LOBBIES */
                 dota2Client.createPracticeLobby({
                         "game_name": "dota2-bot-test",
-                        "server_region": Dota2.ServerRegion.PWTELECOMWUHAN,
+                        "team_details": td,
+                        "server_region": 5,
                         "game_mode": Dota2.schema.DOTA_GameMode.DOTA_GAMEMODE_CUSTOM,
                         "series_type": 0,
                         "game_version": 1,
@@ -61,14 +68,14 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
                         "custom_game_id": new Long.fromString("1613886175"),
                         "custom_min_players": 1,
                         "custom_max_players": 8,
-                        "custom_game_crc": new Long.fromString("13580460572162792542"),
+                        "custom_game_crc": new Long.fromString("16210411483647321842"),
                         "custom_game_timestamp": Date.now(),
                         "custom_game_penalties": false,
                         "pause_setting": 1
                     },
                     function (err, body) {
                         console.log(JSON.stringify(body));
-                        dota2Client.inviteToLobby(new Long.fromString("76561198030533450"));
+                        //dota2Client.inviteToLobby(new Long.fromString("76561198030533450"));
                     });
             });
 

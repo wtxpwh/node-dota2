@@ -1,6 +1,8 @@
 var Dota2 = require("../index");
 
 Dota2._lobbyOptions = {
+    lobby_id: "object",
+    team_details: "object",
     game_name: "string",
     server_region: "number",
     game_mode: "number",
@@ -25,11 +27,11 @@ Dota2._lobbyOptions = {
     custom_game_mode: "string",
     custom_map_name: "string",
     custom_difficulty: "number",
-    custom_game_id: "number",
+    custom_game_id: "object",
     custom_min_players: "number",
     custom_max_players: "number",
     visibility: "number",
-    custom_game_crc: "number",
+    custom_game_crc: "object",
     custom_game_timestamp: "number",
     previous_match_override: "number",
     pause_setting: "number",

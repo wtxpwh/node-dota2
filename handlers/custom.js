@@ -17,6 +17,19 @@ Dota2.Dota2Client.prototype.requestJoinableCustomGameModes = function requestJoi
     this.sendToGC(Dota2.schema.EDOTAGCMsg.k_EMsgGCJoinableCustomGameModesRequest, payload);
 }
 
+
+Dota2.Dota2Client.prototype.publishUserStat = function publishUserStat(stats, rd) {
+
+    this.Logger.debug("Sending publishUserStat custom game modes request");
+    var payload = new Dota2.schema.CMsgClientToGCPublishUserStat({
+        "user_stats_event": stats,
+        "reference_data": rd
+    });
+    this.sendToGC(Dota2.schema.EDOTAGCMsg.k_EMsgClientToGCPublishUserStat, payload);
+}
+
+
+
 // Events
 /**
  * Emitted in response to a {@link module:Dota2.Dota2Client#requestJoinableCustomGameModes|request for joinable custom game modes}.
