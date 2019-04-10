@@ -2,8 +2,8 @@ var Dota2 = require("../index");
 
 Dota2._lobbyOptions = {
     lobby_id: "object",
-    team_details: "object",
     game_name: "string",
+    team_details: "object",
     server_region: "number",
     game_mode: "number",
     cm_pick: "number",
@@ -36,13 +36,12 @@ Dota2._lobbyOptions = {
     previous_match_override: "number",
     pause_setting: "number",
     bot_difficulty_dire: "number",
-    bot_dire: "number",
     bot_radiant: "number",
+    bot_dire: "number",
     selection_priority_rules: "number",
     custom_game_penalties: "boolean",
     lan_host_ping_location: "string",
     league_node_id: "number"
-
 };
 
 /**
