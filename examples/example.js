@@ -34,8 +34,6 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
             dota2Client.on("ready", function () {
                 console.log("Node-dota2 ready.");
 
-                dota2Client.publishUserStat(3, 0);
-
                 dota2Client.leavePracticeLobby(function (err, body) {
                     console.log(JSON.stringify(body));
                 });
@@ -43,14 +41,9 @@ const onSteamLogOn = function onSteamLogOn(logonResp) {
                     console.log(JSON.stringify(body));
                 });
 
-                let td= [];
-                td.push(new Dota2.schema.CLobbyTeamDetails({}));
-                td.push(new Dota2.schema.CLobbyTeamDetails({}));
-
                 /* LOBBIES */
                 dota2Client.createPracticeLobby({
                         "game_name": "dota2-bot-test",
-                        "team_details": td,
                         "server_region": 5,
                         "game_mode": Dota2.schema.DOTA_GameMode.DOTA_GAMEMODE_CUSTOM,
                         "series_type": 0,

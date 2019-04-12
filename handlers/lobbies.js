@@ -155,7 +155,6 @@ Dota2.Dota2Client.prototype.createPracticeLobby = function(options, callback) {
     this.Logger.debug("Sending match CMsgPracticeLobbyCreate request");
     var lobby_details = Dota2._parseOptions(finalOptions, Dota2._lobbyOptions);
     var payload = new Dota2.schema.CMsgPracticeLobbyCreate({
-        "client_version": 3416,
         "lobby_details": new Dota2.schema.CMsgPracticeLobbySetDetails(lobby_details),
         "pass_key": finalOptions.pass_key
     });
@@ -389,7 +388,7 @@ Dota2.Dota2Client.prototype.destroyLobby = function(callback) {
     callback = callback || null;
 
     /* Sends a message to the Game Coordinator requesting to destroy the lobby.  Listen for `lobbyDestroyed` event for Game Coordinator's response. */
-    this.Logger.debug("Sending match CMsgPracticeLobbyLeave request");
+    this.Logger.debug("Sending match CMsgPracticeLobbydestroy request");
     
     var payload = new Dota2.schema.CMsgDOTADestroyLobbyRequest({});
     this.sendToGC(Dota2.schema.EDOTAGCMsg.k_EMsgDestroyLobbyRequest,
